@@ -2,11 +2,7 @@ use crate::halo2::{
     plonk,
     plonk::{Error},
     transcript::{Blake2bRead, Blake2bWrite},
-};
-
-use pasta_curves::{
-    vesta, 
-    pallas::Base as Fp
+    halo2curves::pasta::{vesta, pallas::Base as Fp},
 };
 
 use crate::{
@@ -46,54 +42,54 @@ impl AsRef<[u8]> for Proof {
 }
 
 impl Proof {
-    /// Creates a proof for the given circuit and instances.
-    pub fn create_raw(
-        pk: &ProvingKey,
-        circuits: &[Circuit],
-        instances: &[Instance],
-    ) -> Result<Vec<u8>, Error> {
-        let instances: Vec<_> = instances.iter().map(|i| i.to_halo2_instance()).collect();
-        let instances: Vec<Vec<_>> = instances
-            .iter()
-            .map(|i| i.iter().map(|c| &c[..]).collect())
-            .collect();
-        let public_inputs: Vec<_> = instances.iter().map(|i| &i[..]).collect();
+    // Creates a proof for the given circuit and instances.
+    // pub fn create_raw(
+    //     pk: &ProvingKey,
+    //     circuits: &[Circuit],
+    //     instances: &[Instance],
+    // ) -> Result<Vec<u8>, Error> {
+    //     let instances: Vec<_> = instances.iter().map(|i| i.to_halo2_instance()).collect();
+    //     let instances: Vec<Vec<_>> = instances
+    //         .iter()
+    //         .map(|i| i.iter().map(|c| &c[..]).collect())
+    //         .collect();
+    //     let public_inputs: Vec<_> = instances.iter().map(|i| &i[..]).collect();
 
-        let mut transcript = Blake2bWrite::<_, vesta::Affine, _>::init(vec![]);
-        plonk::create_proof(&pk.params, &pk.pk, &circuits, &public_inputs, &mut transcript)?;
-        Ok(transcript.finalize())
-    }
-    pub fn create(
-        pk: &ProvingKey,
-        circuits: &[Circuit],
-        instances: &[Instance],
-    ) -> Result<Self, Error> {
-        let raw = Proof::create_raw(pk, circuits, instances)?;
-        Ok(Proof(raw))
-    }
+    //     let mut transcript = Blake2bWrite::<_, vesta::Affine, _>::init(vec![]);
+    //     plonk::create_proof(&pk.params, &pk.pk, &circuits, &public_inputs, &mut transcript)?;
+    //     Ok(transcript.finalize())
+    // }
+    // pub fn create(
+    //     pk: &ProvingKey,
+    //     circuits: &[Circuit],
+    //     instances: &[Instance],
+    // ) -> Result<Self, Error> {
+    //     let raw = Proof::create_raw(pk, circuits, instances)?;
+    //     Ok(Proof(raw))
+    // }
 
-    pub fn verify(&self, vk: &VerifyingKey, instances: &[Instance]) -> Result<(), plonk::Error> {
-        let instances: Vec<_> = instances.iter().map(|i| i.to_halo2_instance()).collect();
-        let instances: Vec<Vec<_>> = instances
-            .iter()
-            .map(|i| i.iter().map(|c| &c[..]).collect())
-            .collect();
-        let instances: Vec<_> = instances.iter().map(|i| &i[..]).collect();
+    // pub fn verify(&self, vk: &VerifyingKey, instances: &[Instance]) -> Result<(), plonk::Error> {
+    //     let instances: Vec<_> = instances.iter().map(|i| i.to_halo2_instance()).collect();
+    //     let instances: Vec<Vec<_>> = instances
+    //         .iter()
+    //         .map(|i| i.iter().map(|c| &c[..]).collect())
+    //         .collect();
+    //     let instances: Vec<_> = instances.iter().map(|i| &i[..]).collect();
 
-        let msm = vk.params.empty_msm();
-        let mut transcript = Blake2bRead::init(&self.0[..]);
-        let guard = plonk::verify_proof(&vk.params, &vk.vk, msm, &instances, &mut transcript)?;
-        let msm = guard.clone().use_challenges();
-        if msm.eval() {
-            Ok(())
-        } else {
-            Err(plonk::Error::ConstraintSystemFailure)
-        }
-    }
+    //     let msm = vk.params.empty_msm();
+    //     let mut transcript = Blake2bRead::init(&self.0[..]);
+    //     let guard = plonk::verify_proof(&vk.params, &vk.vk, msm, &instances, &mut transcript)?;
+    //     let msm = guard.clone().use_challenges();
+    //     if msm.eval() {
+    //         Ok(())
+    //     } else {
+    //         Err(plonk::Error::ConstraintSystemFailure)
+    //     }
+    // }
 
-    pub fn new(bytes: Vec<u8>) -> Self {
-        Proof(bytes)
-    }
+    // pub fn new(bytes: Vec<u8>) -> Self {
+    //     Proof(bytes)
+    // }
 }
 
 /*

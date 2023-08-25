@@ -1,8 +1,9 @@
 //! https://github.com/daira/pasta-hadeshash
 //!
 //! sage generate_parameters_grain.sage 1 0 255 3 8 56 0x40000000000000000000000000000000224698fc0994a8dd8c46eb2100000001
-use pasta_curves::vesta;
-
+use crate::halo2::{
+    halo2curves::pasta::{Fp, vesta},
+};
 // Number of round constants: 192
 // Round constants for GF(p):
 pub(crate) const ROUND_CONSTANTS: [[vesta::Base; 3]; 64] = [

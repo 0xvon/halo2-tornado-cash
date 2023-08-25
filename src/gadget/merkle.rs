@@ -1,8 +1,8 @@
 use crate::halo2::{
     plonk::{Error},
-    circuit::{Layouter}
+    circuit::{Layouter},
+    halo2curves::pasta::{Fp, pallas},
 };
-use pasta_curves::pallas;
 mod chip;
 
 use std::marker::PhantomData;
@@ -70,7 +70,7 @@ impl
 mod test {
     use crate::halo2::{
         dev::MockProver,
-        pasta::Fp,
+        halo2curves::pasta::{Fp, pallas},
         circuit::{Layouter, SimpleFloorPlanner},
         plonk::{Advice, Instance, Column, ConstraintSystem, Error},
         plonk,
@@ -78,7 +78,6 @@ mod test {
     };
     use std::convert::TryInto;
     use std::marker::PhantomData;
-    use pasta_curves::pallas;
 
     use crate::utils::{UtilitiesInstructions, NumericCell, Numeric};
     use super::{MerkleChip, MerkleConfig, InclusionProof};

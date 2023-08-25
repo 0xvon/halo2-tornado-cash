@@ -3,10 +3,9 @@ use crate::halo2::{
     circuit::{Chip, Layouter},
     plonk::{Advice, Column, ConstraintSystem, Error, Selector},
     poly::Rotation,
-    pasta::Fp
+    halo2curves::pasta::{Fp, pallas},
 };
 
-use pasta_curves::pallas;
 use std::marker::PhantomData;
 use std::array;
 
@@ -207,13 +206,11 @@ impl RlnInstructions<pallas::Base> for RlnChip<pallas::Base> {
 mod test {
     use crate::halo2::{
         dev::MockProver,
-        pasta::Fp,
+        halo2curves::pasta::{Fp, pallas},
         circuit::{Layouter, SimpleFloorPlanner},
         plonk::{Advice, Column, ConstraintSystem, Error, Instance},
         plonk,
     };
-
-    use pasta_curves::pallas;
 
     use super::{RlnChip, RlnConfig, RlnInstructions};
 

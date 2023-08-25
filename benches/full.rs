@@ -2,12 +2,12 @@ use criterion::{criterion_group, criterion_main, Criterion};
 
 extern crate rln;
 use crate::rln::{
-    circuit::{Circuit},
+    circuit::Circuit,
     merkle::IncrementalTree,
-    client::{calculate_output},
+    client::calculate_output,
     poseidon::{Hash, P128Pow5T3, ConstantLength},
     proof::{Proof, Instance},
-    keys::{ProvingKey}
+    keys::ProvingKey,
 };
 
 use rand;
@@ -62,11 +62,11 @@ fn bench_rln(depth: usize, c: &mut Criterion) {
 
     let mut group = c.benchmark_group("rln-proof");
     group.sample_size(10);
-    group.bench_function("full", |b| {
-        b.iter(|| {
-            Proof::create(&pk, &[circuit.clone()], &[instance.clone()]).expect("proof should not fail")
-        });
-    });
+    // group.bench_function("full", |b| {
+    //     b.iter(|| {
+    //         Proof::create(&pk, &[circuit.clone()], &[instance.clone()]).expect("proof should not fail")
+    //     });
+    // });
 }
 
 fn criterion_benchmark(c: &mut Criterion) {

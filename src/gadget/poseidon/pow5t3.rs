@@ -631,7 +631,7 @@ mod tests {
         arithmetic::FieldExt,
         circuit::{Layouter, SimpleFloorPlanner},
         dev::MockProver,
-        pasta::Fp,
+        halo2curves::pasta::Fp,
         plonk::{Circuit, ConstraintSystem, Error},
     };
 

@@ -196,13 +196,11 @@ impl<F: FieldExt> SwapInstruction<F> for SwapChip<F> {
 mod test {
     use crate::halo2::{
         dev::MockProver,
-        pasta::Fp,
+        halo2curves::pasta::{Fp, pallas},
         circuit::{Layouter, SimpleFloorPlanner},
         plonk::{Advice, Instance, Column, ConstraintSystem, Error},
         plonk,
     };
-
-    use pasta_curves::pallas;
 
     use super::{SwapChip, SwapConfig, SwapInstruction};
 

@@ -2,10 +2,9 @@ use crate::halo2::{
     circuit::{Layouter, SimpleFloorPlanner},
     plonk::{Advice, Instance, Column, ConstraintSystem, Error},
     plonk,
-    pasta::Fp
+    halo2curves::pasta::{Fp, pallas},
 };
 use std::marker::PhantomData;
-use pasta_curves::pallas;
 
 use crate:: {
     utils::{UtilitiesInstructions, NumericCell, CellValue, Var, from_cell_vale_to_numeric},
@@ -173,7 +172,7 @@ impl plonk::Circuit<pallas::Base> for Circuit {
 mod test {
     use crate::halo2::{
         dev::MockProver,
-        pasta::Fp,
+        halo2curves::pasta::Fp,
     };
     use super::{Circuit, DEPTH};
     use crate::poseidon::{Hash, P128Pow5T3, ConstantLength};

@@ -1,5 +1,5 @@
 use crate::halo2::{
-    pasta::Fp
+    halo2curves::pasta::Fp,
 };
 
 use num_bigint::BigUint;

@@ -2,9 +2,8 @@ use crate::halo2::{
     circuit::{Chip, Layouter},
     arithmetic::FieldExt,
     plonk::{Advice, Column, ConstraintSystem, Error},
-    pasta::Fp
+    halo2curves::pasta::{Fp, pallas},
 };
-use pasta_curves::pallas;
 
 use std::{marker::PhantomData};
 use crate::utils::{NumericCell, UtilitiesInstructions, Numeric, CellValue, Var, from_cell_vale_to_numeric};
